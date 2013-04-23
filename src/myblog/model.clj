@@ -1,13 +1,15 @@
 (ns myblog.model
-  (:use [korma db core]))
+  (:use [korma db core])
+  (:require [clojure.xml :as xml])
+  (:import  [java.io ByteArrayInputStream]))
 
 
 
 (def default-conn {:classname "com.mysql.jdbc.Driver"
                    :subprotocol "mysql"
-                   :user "myblog"
-                   :password "myblog"
-                   :subname "//127.0.0.1:3306/myblog?useUnicode=true&characterEncoding=utf8"
+                   :user "root"
+                   :password ""
+                   :subname "//127.0.0.1:3306/rss?useUnicode=true&characterEncoding=utf8"
                    :delimiters "`"})
 
 ;; (def env (into {} (System/getenv)))
@@ -27,6 +29,8 @@
 
 (defentity article)
 
+(defentity rss_chanel)
+
 
 (defn create-article [item]
   (insert article (values item)))
@@ -36,6 +40,13 @@
 
 (defn find-article [id]
   (first (select article (where {:id id}))))
+
+(defn insert-rss-chanel [item]
+  (insert rss_chanel
+          (values item)))
+
+(defn select-rss-chanel []
+  (select rss_chanel))
 
 (defn update-article [item]
   (update article
