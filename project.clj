@@ -7,7 +7,9 @@
                  [mysql/mysql-connector-java "5.1.24"]
                  [korma "0.3.0-RC5"]
                  [lib-noir "0.4.9"]
-                 [clj-http "0.1.2"]]
+                 [clj-http "0.1.2"]
+                 [org.jdom/jdom "2.0.1"]
+                 [net.java.dev.rome/rome "1.0.0"]]
   :plugins [[lein-ring "0.8.2"]]
   :ring {:handler myblog.handler/app}
   :profiles

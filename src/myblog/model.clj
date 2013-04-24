@@ -30,6 +30,7 @@
 (defentity article)
 
 (defentity rss_chanel)
+(defentity rss_entry)
 
 
 (defn create-article [item]
@@ -43,6 +44,10 @@
 
 (defn insert-rss-chanel [item]
   (insert rss_chanel
+          (values item)))
+
+(defn insert-rss-entry [item]
+  (insert rss_entry
           (values item)))
 
 (defn select-rss-chanel []
