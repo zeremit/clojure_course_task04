@@ -53,6 +53,9 @@
 (defn select-rss-chanel []
   (select rss_chanel))
 
+(defn select-rss-chanel-url [url]
+  (select rss_chanel  (where {:rss_url url})))
+
 (defn update-article [item]
   (update article
           (set-fields item)

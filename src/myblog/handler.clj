@@ -3,12 +3,15 @@
   (:require [compojure.handler :as handler]
             [compojure.route :as route]
             [myblog.model :as model]
+            [myblog.rss :as rss]
             [myblog.view :as view]
             [ring.util.response :as resp]
             [noir.util.middleware :as noir]
             [noir.session :as session]
             ))
 
+(defmacro forever [& body] 
+  `(while true ~@body))
 
 (defn pint [s-int]
   (Integer/parseInt s-int))
@@ -40,9 +43,19 @@
 (defn show-new-article []
   (view/show-new-article))
 
+(defn create-rss [rss]
+  (if (< 0 (count(model/select-rss-chanel-url rss)))
+    false
+  (let[feed   (rss/parse-feed rss)]
+    (model/insert-rss-chanel {:rss_url rss, :published-date (:published-date feed), :description (:description feed), :title (:title feed)})
+    true)))
+
 (defn create-article [article]
-  (model/create-article article)
+  (model/insert-rss-chanel article)
   (resp/redirect "/articles"))
+
+(defn update-entry [rss]
+ (map (fn[x](map (fn[y](model/insert-rss-entry y)) (:entries (rss/parse-feed (:rss_url  x))))) (lazy-seq (rss))))
 
 
 (defroutes app-routes
