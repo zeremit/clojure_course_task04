@@ -56,6 +56,9 @@
 (defn select-rss-chanel-url [url]
   (select rss_chanel  (where {:rss_url url})))
 
+(defn select-rss-dublicate-entry [entry]
+  (select rss_entry (aggregate (count :*) :cnt)  (where {:title (:title entry) :published-date (:published-date entry)})))
+
 (defn update-article [item]
   (update article
           (set-fields item)

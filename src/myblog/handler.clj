@@ -54,8 +54,13 @@
   (model/insert-rss-chanel article)
   (resp/redirect "/articles"))
 
+(defn check-and-insert [rss]
+  ( if (> (:cnt  (first (model/select-rss-dublicate-entry rss))) 0)
+    false
+    (model/insert-rss-entry rss)))
+
 (defn update-entry [rss]
- (map (fn[x](map (fn[y](model/insert-rss-entry y)) (:entries (rss/parse-feed (:rss_url  x))))) (lazy-seq (rss))))
+ (map (fn[x](map (fn[y](check-and-insert y)) (:entries (rss/parse-feed (:rss_url  x))))) (lazy-seq (rss))))
 
 
 (defroutes app-routes
